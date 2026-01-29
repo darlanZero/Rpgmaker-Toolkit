@@ -403,21 +403,36 @@ class RPGMakerDecrypterAllInOne:
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("❌ Uso: python decrypt_all_in_one.py /caminho/para/jogo")
-        print("\nExemplo:")
-        print("  python decrypt_all_in_one.py /sdcard/joiplay/deathzone")
+    print(f"{Color.BOLD}{Color.CYAN}{'='*70}{Color.ENDC}")
+    print(f"{Color.BOLD}{Color.CYAN}{'RPG MAKER DECRYPTER ALL-IN-ONE':^70}{Color.ENDC}")
+    print(f"{Color.BOLD}{Color.CYAN}{'='*70}{Color.ENDC}\n")
+
+    # Verifica se foi passado como argumento ou pergunta interativamente
+    if len(sys.argv) >= 2:
+        game_folder = sys.argv[1]
+    else:
+        print(f"{Color.YELLOW}📁 Nenhum diretório especificado como argumento.{Color.ENDC}\n")
+        game_folder = input(f"{Color.CYAN}Digite o caminho completo do jogo: {Color.ENDC}").strip()
+
+        # Remove aspas se o usuário colocar
+        if game_folder.startswith('"') and game_folder.endswith('"'):
+            game_folder = game_folder[1:-1]
+        if game_folder.startswith("'") and game_folder.endswith("'"):
+            game_folder = game_folder[1:-1]
+
+    if not game_folder:
+        print(f"{Color.RED}❌ Nenhum diretório informado!{Color.ENDC}")
         sys.exit(1)
-    
-    game_folder = sys.argv[1]
-    
+
     if not os.path.isdir(game_folder):
-        print(f"❌ Pasta não encontrada: {game_folder}")
+        print(f"{Color.RED}❌ Pasta não encontrada: {game_folder}{Color.ENDC}")
         sys.exit(1)
-    
+
+    print(f"\n{Color.GREEN}✅ Diretório válido: {game_folder}{Color.ENDC}\n")
+
     decrypter = RPGMakerDecrypterAllInOne(game_folder)
     success = decrypter.run()
-    
+
     sys.exit(0 if success else 1)
 
 
